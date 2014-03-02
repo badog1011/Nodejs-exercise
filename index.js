@@ -48,10 +48,15 @@ fs.readdir(process.cwd(), function (err, files) {
 
 	//called with the option supplied by the user
 	function option(data) {
+		var filename = files[Number(data)];
 		if (!files[Number(data)]) {
 			stdout.write('	\033[31mEnter your choice: \33[39m');
 		} else {
 			stdin.pause();
+			fs.readFile(__dirname + '/' + filename, 'utf8', function (err, data) {//事先指定編碼，(utf8)這樣數據就可以得到相應的字串符號了
+				console.log('');
+				console.log('\033[90m' + data.replace(/(.*)/g, '	$1') + '\033[39m');//使用正規表達式來添加輔助縮寫後將文件內容進行輸出
+			});
 		}
 	}
 
