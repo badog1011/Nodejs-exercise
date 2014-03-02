@@ -1,9 +1,41 @@
-
 /**
 *Module dependencies.
 */
 var fs = require('fs');
 
-fs.readdir(__dirname, function (err, files) {
-	console.log(files);
+fs.readdir(process.cwd(), function (err, files) {
+	console.log('');
+
+	if (!files.length) {
+		return console.log('	\033[31m No files to show!\033[39m\n');// \033[31m和\033[39m是為了讓文本成現為紅色
+	}
+
+	console.log(' Select which file or directory you want to see\n');
+	
+	/**
+	*讓每個元素接執行此函數
+	**/
+	function file(i) {
+		var filename = files[i];//抓取檔案名稱
+
+		fs.stat(__dirname + '/' + filename, function (err, stat) {
+			if (stat.isDirectory()) {
+				console.log('	'+i+'	\033[36m' + filename + '/\033[39m');//如果是目錄 文本用綠色顯示
+			} else {
+				console.log('	'+i+'	\033[90m' + filename + '\033[39m');//一般檔案則用 灰色顯示
+			}
+
+			i++;//計數器
+			if (i == files.length) {
+				console.log('');
+				process.stdout.write('	\033[33mEnter your choice: \33[39m');
+				process.stdin.resume();
+				process.stdin.setEncoding('utf8'); //設置stream編碼為utf8即可支援特殊符號
+			} else {
+				file(i);//執行函式 直到顯示所有檔案才結束
+			}
+		});
+	}
+
+	file(0);
 });
