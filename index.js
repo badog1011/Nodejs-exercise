@@ -1,7 +1,9 @@
 /**
 *Module dependencies.
 */
-var fs = require('fs');
+var fs = require('fs')
+  , stdin = process.stdin
+  , stdout = process.stdout
 
 fs.readdir(process.cwd(), function (err, files) {
 	console.log('');
@@ -25,17 +27,35 @@ fs.readdir(process.cwd(), function (err, files) {
 				console.log('	'+i+'	\033[90m' + filename + '\033[39m');//一般檔案則用 灰色顯示
 			}
 
-			i++;//計數器
-			if (i == files.length) {
-				console.log('');
-				process.stdout.write('	\033[33mEnter your choice: \33[39m');
-				process.stdin.resume();
-				process.stdin.setEncoding('utf8'); //設置stream編碼為utf8即可支援特殊符號
+			
+			if (++i == files.length) {
+				read();
 			} else {
 				file(i);//執行函式 直到顯示所有檔案才結束
 			}
 		});
 	}
+
+	//read user input when files are shown
+	function read() {
+		console.log('');
+		process.stdout.write('	\033[33mEnter your choice: \33[39m');
+		process.stdin.resume();
+		process.stdin.setEncoding('utf8'); //設置stream編碼為utf8即可支援特殊符號
+
+		stdin.on('data', option);
+	}
+
+	//called with the option supplied by the user
+	function option(data) {
+		if (!files[Number(data)]) {
+			stdout.write('	\033[31mEnter your choice: \33[39m');
+		} else {
+			stdin.pause();
+		}
+	}
+
+
 
 	file(0);
 });
