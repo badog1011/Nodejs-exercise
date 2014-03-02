@@ -5,7 +5,7 @@ var fs = require('fs')
   , stdin = process.stdin
   , stdout = process.stdout
 
-fs.readdir(process.cwd(), function (err, files) {
+fs.readdir(process.cwd(), function (err, files) {//process.cwd()為獲取當前目錄
 	console.log('');
 
 	if (!files.length) {
@@ -26,7 +26,7 @@ fs.readdir(process.cwd(), function (err, files) {
 			if (stat.isDirectory()) {
 				console.log('	'+i+'	\033[36m' + filename + '/\033[39m');//如果是目錄 文本用綠色顯示
 			} else {
-				console.log('	'+i+'	\033[211m' + filename + '\033[39m');//一般檔案則用 灰色顯示
+				console.log('	'+i+'	\033[90m' + filename + '\033[39m');//一般檔案則用 灰色顯示
 			}
 
 			
