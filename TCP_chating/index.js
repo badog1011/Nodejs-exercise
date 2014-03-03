@@ -7,9 +7,19 @@ var net = require('net')
 *創建服務器
 **/
 
+/*追蹤連接數*/
+var count = 0;
+
 var server = net.createServer(function (conn) {
-	// handle connection
-	console.log('\033[90m	new connection!\033[39m');
+	conn.write(
+		  '\n > welcome to \033[92mnode-chat\033[39m!'
+		+ '\n >' + count + ' other people are connected at this time.'
+		+ '\n > please write your name and press enter: '
+		);
+	count++;
+	conn.on('close', function () {
+		count--;
+	});
 });
 
 /**
