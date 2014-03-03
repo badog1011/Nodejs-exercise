@@ -1,3 +1,4 @@
+var qs = require('querystring');
 require('http').createServer(function (req, res) {
 	if ('/' == req.url) {
 		res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -18,8 +19,7 @@ require('http').createServer(function (req, res) {
 			});
 			req.on('end', function () {
 				res.writeHead(200, {'Content-Type': 'text/html'});
-				res.end('<p>Content-Type: ' + req.headers['content-type'] + '<p>'
-					+ '<p>Data:</p><pre>' + body + '</pre>');
-			});			
+				res.end('<p>Your name is:<b>' + qs.parse(body).name + '</b></p>');
+			});
 		}
 }).listen(3000);
