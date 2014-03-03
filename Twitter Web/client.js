@@ -1,3 +1,10 @@
+var  http = require('http')
+	,qs = request('querystring')
+
+
+function send (theName) {
+	http
+}
 require('http').request({
 	 host:   '127.0.0.1'
 	,port:  '3000'
