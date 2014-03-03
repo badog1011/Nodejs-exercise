@@ -3,6 +3,7 @@
 **/
 
 var net = require('net')
+
 /**
 *創建服務器
 **/
@@ -11,12 +12,17 @@ var net = require('net')
 var count = 0;
 
 var server = net.createServer(function (conn) {
+	conn.setEncoding('utf8');//設定編碼方式
 	conn.write(
-		  '\n > welcome to \033[92mnode-chat\033[39m!'
-		+ '\n >' + count + ' other people are connected at this time.'
+		  '\n > welcome to node chat!'
+		+ '\n > ' + count + ' other people are connected at this time.' 
 		+ '\n > please write your name and press enter: '
 		);
 	count++;
+
+	conn.on('data', function (data) {
+		console.log(data);
+	});
 	conn.on('close', function () {
 		count--;
 	});
