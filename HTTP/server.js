@@ -19,7 +19,10 @@ require('http').createServer(function (req, res) {
 			});
 			req.on('end', function () {
 				res.writeHead(200, {'Content-Type': 'text/html'});
-				res.end('<p>Your name is:<b>' + qs.parse(body).name + '</b></p>');
+				res.end('<p>Your name is:<b>' + qs.parse(body).name + '</b></p>');//透過querystring丟字串
 			});
+		} else {
+			res.writeHead(404);
+			res.end('Not Found');
 		}
 }).listen(3000);
