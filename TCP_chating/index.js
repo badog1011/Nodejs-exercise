@@ -24,7 +24,14 @@ var server = net.createServer(function (conn) {
 		+ '\n > please write your name and press enter: '
 		);
 	count++;
-	
+
+	function broadcast (msg, exceptMyself) {
+		for (var i in users) {
+			if (!exceptMyself || i != nickname) {
+				users[i].write(msg);
+			}
+		}
+	}
 	conn.on('data', function (data) {
 		data = data.replace('\r\n', '');
 		if (!nickname) {
@@ -34,15 +41,21 @@ var server = net.createServer(function (conn) {
 			} else {
 				nickname = data;
 				users[nickname] = conn;
-
+				broadcast('\033[90m > ' + nickname + 'joined the room\033[39m\n');
 				for (var i in users) {
-					users[i].write('\033[90m > ' + nickname + ' joined the room\033[39m\n');
+					if (i != nickname) {//ensure the message send to the other user except myrself
+						broadcast('\033[90m > ' + nickname + ' :\033[39m ' + data + '\n');
+					}
+					
 				}
 			}
 		}
 	});
 	conn.on('close', function () {
 		count--;
+		broadcast('\033[90m > ' + nickname + 'left the room\033[39m\n');
+		delete users[nickname];
+
 	});
 });
 
