@@ -7,7 +7,7 @@ if (!search.length) {
 	return console.log('\n  Usage: node tweets <search term>\n');
 }
 console.log('\n searching for: \033[96m' + search + '\033[39m\n');
-http.request({
+http.get({
 	  host: 'search.twitter.com'
 	, path: '/search.json?' + qs.stringify({ q: search})
 }), function  (res) {
@@ -23,5 +23,5 @@ http.request({
 			console.log('	\033[94m' + tweet.from_user + '\033[39m');
 			console.log('--');
 		});
-	}).end();
+	});
 }
