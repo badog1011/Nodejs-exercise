@@ -63,4 +63,12 @@ server.use(function(req, res,next) {
 	}
 });
 
+server.use(function(req, res, next) {
+	if ('/fb' == req.url) {
+		res.writeHead(200);
+		res.end('FB!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+	} else {
+		next();
+	}
+});
 server.listen(3000);
