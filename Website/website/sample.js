@@ -21,7 +21,7 @@ var server = connect.createServer();
 *
 **/
 
-server.use(connect.log('dev'));
+server.use(connect.logger('dev'));
 
 /**
 *
@@ -29,7 +29,7 @@ server.use(connect.log('dev'));
 *
 **/
 
-server.use(time( {time:500 }));
+server.use(time( {time: 500 }));
 
 /**
 *
@@ -38,7 +38,7 @@ server.use(time( {time:500 }));
 **/
 
 server.use(function(req, res, next) {
-	if ('a/' == req.url) {
+	if ('/a' == req.url) {
 		res.writeHead(200);
 		res.end('Fast!');
 	} else {
@@ -52,8 +52,8 @@ server.use(function(req, res, next) {
 *
 **/
 
-server.use(function(req, res,) {
-	if ('b/' == req.url) {
+server.use(function(req, res,next) {
+	if ('/b' == req.url) {
 		setTimeout(function() {
 			res.writeHead(200);
 			res.end('Slow!');

@@ -10,8 +10,8 @@ var connect = require('connect')
 **/
 
 var server = connect.createServer();
-
-server.use(connect.static(__dirname + '/website'));
+//使用use()來添加static中間物
+server.use(connect.static(__dirname + '/subwebsite'));
 
 
 server.use(function(req, res, next) {
@@ -20,11 +20,7 @@ server.use(function(req, res, next) {
 });
 
 server.use(function(req, res, next) {
-	
-})
-var server = http.createServer(function (req, res) {
-	if ('GET' == req.method && '/images' == req.url.substr(0, 7)//判斷是否為正確圖片路徑
-		 && '.jpg' == req.url.substr(-4)) {
+	if ('GET' == req.method && '/images' == req.url.substr(0, 7)) {//判斷是否為正確圖片路徑
 		fs.stat(__dirname + req.url, function (err, stat) {//此處避免使用同步，否則阻礙其他請求!!!
 			if (err || !stat.isFile()) {
 				res.writeHead(404);
@@ -33,19 +29,29 @@ var server = http.createServer(function (req, res) {
 			}
 			serve(__dirname + req.url, 'application/jpg');
 		});
-	} else if ('GET' == req.method && '/' == req.url) {
+	} else {
+		next();
+	}
+});
+
+server.use(function(res, req, next) {
+	if ('GET' == req.method && '/' == req.url) {
 		serve(__dirname + '/index.html', 'text/html');//跳至index
 	} else {
-		res.writeHead(404);//顯示錯誤訊息
-		res.end('Not found');
+		next();
 	}
+});
 
+server.use(function(req, res,next) {
+	res.writeHead(404);//顯示錯誤訊息
+		res.end('Not found');
+});
+
+	//app.use(connect.logger('dev'));
 	function serve (path, type) {
 		res.writeHead(200, { 'Content-Type': type});
 		fs.createReadStream(path).pipe(res);
 	}
-});
-
 /**
 * Listen
 **/
