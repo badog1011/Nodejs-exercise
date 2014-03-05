@@ -2,13 +2,26 @@
 * Module dependence
 **/
 
-var http = require('http')
+var connect = require('connect')
    ,fs = require('fs')
 
 /**
 * Create Server
 **/
 
+var server = connect.createServer();
+
+server.use(connect.static(__dirname + '/website'));
+
+
+server.use(function(req, res, next) {
+	//紀錄日誌
+	console.log(' %s %s ', req.method, req.url);
+});
+
+server.use(function(req, res, next) {
+	
+})
 var server = http.createServer(function (req, res) {
 	if ('GET' == req.method && '/images' == req.url.substr(0, 7)//判斷是否為正確圖片路徑
 		 && '.jpg' == req.url.substr(-4)) {
