@@ -8,10 +8,30 @@ var connect = require('connect')
 /**
 * Create Server
 **/
+var server = connect(
+	connect.bodyParser()
+   ,connect.static('static')
+ );
 
-var server = connect.createServer();
+//var server = connect.createServer();
+
 //使用use()來添加static中間物
 server.use(connect.static(__dirname + '/subwebsite'));
+
+/**
+*
+* 處理上傳資料
+*
+**/
+server.use(connect.bodyParser());
+
+server.use(function (req, res, next) {
+	if ('POST' == req.method) {
+		console.log(req.body.file);
+	} else {
+		next();
+	}
+});
 
 
 server.use(function(req, res, next) {
