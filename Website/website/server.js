@@ -14,6 +14,7 @@ var server = connect.createServer();
 server.use(connect.static(__dirname + '/subwebsite'));
 
 
+
 server.use(function(req, res, next) {
 	//紀錄日誌
 	console.log(' %s %s ', req.method, req.url);
